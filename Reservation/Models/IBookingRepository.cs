@@ -2,7 +2,9 @@
 {		
 	public interface IBookingRepository
 	{
-		IQueryable<Users> Users{ get; }
+		IQueryable<User> Users{ get; }
+		IQueryable<Booking> Bookings{ get; }
+		IQueryable<Room> Rooms{ get; }
 	}
 
 }

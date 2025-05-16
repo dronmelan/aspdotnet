@@ -1,1 +1,22 @@
-﻿<h4>Welcome to Room booking</h4>
+﻿@model Reservation.Models.ViewModels.RoomListViewModel
+
+@foreach (var room in Model.Rooms)
+{
+    <div class="card mb-3 p-3">
+        <h5>@room.RoomNumber - @room.RoomType</h5>
+        <p>@room.Description</p>
+        <p><strong>Price:</strong> @room.PricePerNight ₴ | <strong>Capacity:</strong> @room.Capacity</p>
+        <p><strong>Available:</strong> @(room.IsAvailable ? "Yes" : "No")</p>
+    </div>
+}
+
+<nav>
+    <ul class="pagination">
+        @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
+                <a class="page-link" asp-controller="Room" asp-action="Index" asp-route-page="@i">@i</a>
+            </li>
+        }
+    </ul>
+</nav>

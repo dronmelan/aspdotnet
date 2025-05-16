@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Reservation.Models;
+
 namespace Reservation
 {
     public class Program
@@ -8,13 +12,21 @@ namespace Reservation
 
             builder.Services.AddControllersWithViews();
 
-            var app = builder.Build();
+			builder.Services.AddDbContext<BookingDbContext>(opts => {
+				opts.UseSqlServer(builder.Configuration.GetConnectionString("RoomBookingConnection"));
+			});
+
+			builder.Services.AddScoped<IBookingRepository, EFBookingRepository>();
+
+			var app = builder.Build();
 
             app.UseStaticFiles();
 
             app.MapDefaultControllerRoute();
 
-            app.Run();
+			SeedData.EnsurePopulated(app);
+
+			app.Run();
 
         }
     }

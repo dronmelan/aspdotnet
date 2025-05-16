@@ -1,12 +1,18 @@
 ﻿<!DOCTYPE html>
 <html>
-<head>
-	<meta name="viewport" content="width=device-width" />
-	<title>Reservation</title>
-</head>
+<link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+<header class="bg-primary text-white p-3 mb-4">
+    <div class="container">
+        <h1>Room Booking</h1>
+    </div>
+</header>
 <body>
-	<div>
-		@RenderBody()
-	</div>
+    <div>
+        @RenderBody()
+    </div>
 </body>
+<footer class="bg-light text-center p-3 mt-5">
+    <small>&copy; 2025 Room Booking</small>
+</footer>
 </html>
