@@ -1,0 +1,10 @@
+﻿@model Reservation.Models.Room
+
+<div class="card mb-3 p-3 border rounded shadow-sm">
+    <h5 class="card-title">Номер: @Model.RoomNumber</h5>
+    <p class="card-text">Тип: @Model.RoomType</p>
+    <p class="card-text">Місткість: @Model.Capacity осіб</p>
+    <p class="card-text">Ціна за ніч: @Model.PricePerNight грн</p>
+    <p class="card-text">@Model.Description</p>
+    <p class="card-text text-success">@((Model.IsAvailable) ? "Доступний" : "Зайнятий")</p>
+</div>
