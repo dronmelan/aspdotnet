@@ -7,6 +7,16 @@
         <h1>Room Booking</h1>
     </div>
 </header>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            @await Component.InvokeAsync("NavigationMenu")
+        </div>
+        <div class="col">
+            @RenderBody()
+        </div>
+    </div>
+</div>
 <body>
     <div>
         @RenderBody()

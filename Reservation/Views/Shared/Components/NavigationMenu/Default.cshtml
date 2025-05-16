@@ -1,0 +1,13 @@
+﻿@model IEnumerable<string>
+@{
+    string? selectedType = ViewBag.SelectedType as string;
+}
+<div class="list-group">
+    <a class="list-group-item @(selectedType == null ? "active" : "")"
+       asp-controller="Home" asp-action="Index" asp-route-roomType="">All</a>
+    @foreach (var type in Model)
+    {
+        <a class="list-group-item @(type == selectedType ? "active" : "")"
+           asp-controller="Home" asp-action="Index" asp-route-roomType="@type">@type</a>
+    }
+</div>

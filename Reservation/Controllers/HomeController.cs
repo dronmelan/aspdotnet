@@ -2,39 +2,57 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Reservation.Models;
 using Reservation.Models.ViewModels;
+using Microsoft.AspNetCore.Http;
+
 
 
 namespace SportsStore.Controllers
 {
-	public class HomeController : Controller
-	{
-		private readonly IBookingRepository repository;
-		public int PageSize = 3;
+    public class HomeController : Controller
+    {
+        private readonly IBookingRepository repository;
+        public int PageSize = 2;
 
-		public HomeController(IBookingRepository repo)
-		{
-			repository = repo;
-		}
+        public HomeController(IBookingRepository repo)
+        {
+            repository = repo;
+        }
 
-		public IActionResult Index(int page = 1)
-		{
-			var rooms = repository.Rooms
-				.OrderBy(r => r.Id)
-				.Skip((page - 1) * PageSize)
-				.Take(PageSize);
+        public ViewResult Index(string? roomType, int page = 1)
+        {
+            HttpContext.Session.SetString("TestKey", "Hello from Session");
+            if (roomType != null)
+            {
+                HttpContext.Session.SetString("SelectedRoomType", roomType);
+            }
+            else if (HttpContext.Session.Keys.Contains("SelectedRoomType"))
+            {
+                roomType = HttpContext.Session.GetString("SelectedRoomType");
+            }
 
-			var viewModel = new RoomListViewModel
-			{
-				Rooms = rooms,
-				PagingInfo = new PagingInfo
-				{
-					CurrentPage = page,
-					ItemsPerPage = PageSize,
-					TotalItems = repository.Rooms.Count()
-				}
-			};
+            var rooms = repository.Rooms
+                .Where(r => roomType == null || r.RoomType == roomType)
+                .OrderBy(r => r.Id)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize);
 
-			return View(viewModel);
-		}
-	}
+            var totalItems = repository.Rooms
+                .Where(r => roomType == null || r.RoomType == roomType)
+                .Count();
+
+            return View(new RoomListViewModel
+            {
+                Rooms = rooms,
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = totalItems
+                },
+                CurrentCategory = roomType
+            });
+        }
+
+    }
+
 }

@@ -18,9 +18,17 @@ namespace Reservation
 
 			builder.Services.AddScoped<IBookingRepository, EFBookingRepository>();
 
-			var app = builder.Build();
+            builder.Services.AddDistributedMemoryCache();
+
+            builder.Services.AddSession();
+
+            var app = builder.Build();
 
             app.UseStaticFiles();
+
+            app.UseSession();
+
+            app.UseRouting();
 
             app.MapDefaultControllerRoute();
 
