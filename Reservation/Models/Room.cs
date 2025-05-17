@@ -20,6 +20,8 @@ namespace Reservation.Models
 		public bool IsAvailable { get; set; }
 
 		public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-	}
+        public int HotelId { get; set; }
+        public Hotel Hotel { get; set; } = null!;
+    }
 
 }
