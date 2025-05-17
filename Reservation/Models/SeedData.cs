@@ -13,7 +13,11 @@ namespace Reservation
 
 			context.Database.Migrate();
 
-			if (!context.Rooms.Any())
+            context.Hotels.AddRange(
+				new Hotel {Name = "Grand Hotel", Address = "123 Main St" }
+			);
+
+            if (!context.Rooms.Any())
 			{
 				context.Rooms.AddRange(
 					new Room
@@ -23,8 +27,9 @@ namespace Reservation
 						Capacity = 2,
 						PricePerNight = 850,
 						Description = "Стандартна кімната з ліжком",
-						IsAvailable = true
-					},
+						IsAvailable = true,
+						HotelId = 1
+                    },
 					new Room
 					{
 						RoomNumber = "201",
@@ -32,8 +37,9 @@ namespace Reservation
 						Capacity = 3,
 						PricePerNight = 1300,
 						Description = "Покращена кімната з великим ліжком і видом на сад",
-						IsAvailable = true
-					},
+						IsAvailable = true,
+                        HotelId = 1
+                    },
 					new Room
 					{
 						RoomNumber = "301",
@@ -41,8 +47,9 @@ namespace Reservation
 						Capacity = 4,
 						PricePerNight = 2100,
 						Description = "Кімната з двома ліжками",
-						IsAvailable = true
-					},
+						IsAvailable = true,
+                        HotelId = 1
+                    },
                     new Room
                     {
                         RoomNumber = "102",
@@ -50,7 +57,8 @@ namespace Reservation
                         Capacity = 1,
                         PricePerNight = 600,
                         Description = "Стандартна кімната з ліжком",
-                        IsAvailable = true
+                        IsAvailable = true,
+                        HotelId = 1
                     }
                 );
 
