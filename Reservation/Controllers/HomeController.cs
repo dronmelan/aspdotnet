@@ -40,6 +40,8 @@ namespace SportsStore.Controllers
                 .Where(r => roomType == null || r.RoomType == roomType)
                 .Count();
 
+
+
             return View(new RoomListViewModel
             {
                 Rooms = rooms,
@@ -51,6 +53,7 @@ namespace SportsStore.Controllers
                 },
                 CurrentCategory = roomType
             });
+
         }
 
     }

@@ -12,8 +12,8 @@ using Reservation.Models;
 namespace Reservation.Migrations
 {
     [DbContext(typeof(BookingDbContext))]
-    [Migration("20250517030600_AddHotelAndUpdateRoom")]
-    partial class AddHotelAndUpdateRoom
+    [Migration("20250517101537_AddCRUD")]
+    partial class AddCRUD
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,7 +105,7 @@ namespace Reservation.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal>("PricePerNight")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(8, 2)");
 
                     b.Property<string>("RoomNumber")
                         .IsRequired()
