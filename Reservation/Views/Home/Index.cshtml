@@ -1,8 +1,14 @@
 ﻿@model Reservation.Models.ViewModels.RoomListViewModel
 
+<a asp-controller="Room" asp-action="Create" class="btn btn-success mb-3">+ Add New Room</a>
+
+
 @foreach (var room in Model.Rooms)  
 {
     <partial name="RoomSummary" model="room" />
+    <a asp-controller="Room" asp-action="Details" asp-route-id="@room.Id" class="btn btn-info btn-sm">Details</a>
+    <a asp-controller="Room" asp-action="Edit" asp-route-id="@room.Id" class="btn btn-warning btn-sm">Edit</a>
+    <a asp-controller="Room" asp-action="Delete" asp-route-id="@room.Id" class="btn btn-danger btn-sm">Delete</a>
 }
 
 
@@ -12,6 +18,7 @@
         {
             <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
                 <a class="page-link" asp-controller="Home" asp-action="Index" asp-route-page="@i">@i</a>
+
             </li>
         }
     </ul>

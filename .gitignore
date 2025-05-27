@@ -2,3 +2,10 @@ bin/
 obj/
 .idea/
 .vs/
+*.log
+*.zip
+*.exe
+*.mp4
+wwwroot/lib/
+wwwroot/dist/
+wwwroot/build/
