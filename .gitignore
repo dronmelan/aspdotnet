@@ -6,6 +6,6 @@ obj/
 *.zip
 *.exe
 *.mp4
-wwwroot/lib/
-wwwroot/dist/
-wwwroot/build/
+Reservation/wwwroot/lib/
+Reservation/wwwroot/dist/
+Reservation/wwwroot/build/
