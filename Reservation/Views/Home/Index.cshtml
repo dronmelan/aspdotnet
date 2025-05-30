@@ -1,16 +1,27 @@
 ﻿@model Reservation.Models.ViewModels.RoomListViewModel
 
-<a asp-controller="Room" asp-action="Create" class="btn btn-success mb-3">+ Add New Room</a>
-
-
-@foreach (var room in Model.Rooms)  
+@if (User.IsInRole("Admin"))
 {
-    <partial name="RoomSummary" model="room" />
-    <a asp-controller="Room" asp-action="Details" asp-route-id="@room.Id" class="btn btn-info btn-sm">Details</a>
-    <a asp-controller="Room" asp-action="Edit" asp-route-id="@room.Id" class="btn btn-warning btn-sm">Edit</a>
-    <a asp-controller="Room" asp-action="Delete" asp-route-id="@room.Id" class="btn btn-danger btn-sm">Delete</a>
+    <a asp-controller="Room" asp-action="Create" class="btn btn-success mb-3">+ Додати нову кімнату</a>
 }
 
+@foreach (var room in Model.Rooms)
+{
+    <partial name="RoomSummary" model="room" />
+
+    <div class="mb-3">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a asp-controller="Room" asp-action="Details" asp-route-id="@room.Id" class="btn btn-info btn-sm">Деталі</a>
+        }
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="Room" asp-action="Edit" asp-route-id="@room.Id" class="btn btn-warning btn-sm">Редагувати</a>
+            <a asp-controller="Room" asp-action="Delete" asp-route-id="@room.Id" class="btn btn-danger btn-sm">Видалити</a>
+        }
+    </div>
+}
 
 <nav>
     <ul class="pagination">
@@ -18,8 +29,14 @@
         {
             <li class="page-item @(i == Model.PagingInfo.CurrentPage ? "active" : "")">
                 <a class="page-link" asp-controller="Home" asp-action="Index" asp-route-page="@i">@i</a>
-
             </li>
         }
     </ul>
 </nav>
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="alert alert-info mt-4">
+        <p>Щоб переглянути деталі кімнат, будь ласка, <a asp-controller="Auth" asp-action="Login">увійдіть</a> або <a asp-controller="Auth" asp-action="Register">зареєструйтеся</a>.</p>
+    </div>
+}

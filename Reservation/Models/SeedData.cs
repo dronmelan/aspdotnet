@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Org.BouncyCastle.Crypto.Generators;
 using Reservation.Models;
 
 namespace Reservation
@@ -60,10 +61,11 @@ namespace Reservation
                         IsAvailable = true,
                         HotelId = 1
                     }
-                );
-
-				context.SaveChanges();
+                );               
+				
 			}
-		}
+
+            context.SaveChanges();
+        }
 	}
 }

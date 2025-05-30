@@ -12,8 +12,8 @@ using Reservation.Models;
 namespace Reservation.Migrations
 {
     [DbContext(typeof(BookingDbContext))]
-    [Migration("20250517101537_AddCRUD")]
-    partial class AddCRUD
+    [Migration("20250530162620_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,6 +143,10 @@ namespace Reservation.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

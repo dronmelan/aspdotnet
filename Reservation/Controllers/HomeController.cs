@@ -4,8 +4,6 @@ using Reservation.Models;
 using Reservation.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 
-
-
 namespace SportsStore.Controllers
 {
     public class HomeController : Controller
@@ -20,7 +18,6 @@ namespace SportsStore.Controllers
 
         public ViewResult Index(string? roomType, int page = 1)
         {
-            HttpContext.Session.SetString("TestKey", "Hello from Session");
             if (roomType != null)
             {
                 HttpContext.Session.SetString("SelectedRoomType", roomType);
@@ -40,7 +37,9 @@ namespace SportsStore.Controllers
                 .Where(r => roomType == null || r.RoomType == roomType)
                 .Count();
 
-
+            // Передаємо інформацію про роль користувача у ViewBag
+            ViewBag.UserRole = User.IsInRole("Admin") ? "Admin" : User.IsInRole("User") ? "User" : "Guest";
+            ViewBag.IsAuthenticated = User.Identity?.IsAuthenticated ?? false;
 
             return View(new RoomListViewModel
             {
@@ -53,9 +52,6 @@ namespace SportsStore.Controllers
                 },
                 CurrentCategory = roomType
             });
-
         }
-
     }
-
 }

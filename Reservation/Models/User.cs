@@ -1,4 +1,6 @@
-﻿namespace Reservation.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Reservation.Models
 {
 	public class User
 	{
@@ -6,13 +8,20 @@
 
 		public string Name { get; set; } = null!;
 
-		public string Email { get; set; } = null!;
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress]
+        public string Email { get; set; } = null!;
 
-		public string PasswordHash { get; set; } = null!;
+        [Required(ErrorMessage = "Password is required")]
+        [DataType(DataType.Password)]
+        public string PasswordHash { get; set; } = null!;
 
 		public string? Phone { get; set; }
 
-		public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+        [Required]
+        public string Role { get; set; } = "User";
+        public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
 	}
 
 }
