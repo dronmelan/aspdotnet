@@ -1,4 +1,4 @@
-﻿namespace Reservation.Models
+﻿namespace LibraryReservation.Models
 {
     public class AppIdentityDbContext
     {

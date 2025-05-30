@@ -1,4 +1,9 @@
-﻿namespace Reservation.Models
+﻿using LibraryReservation.Models;
+using LibraryReservation.Repository;
+using Reservation.Models;
+
+
+namespace LibraryReservation.Models
 {
 	public class Booking
 	{

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Reservation.Models
+namespace LibraryReservation.Models
 {
 	public class User
 	{

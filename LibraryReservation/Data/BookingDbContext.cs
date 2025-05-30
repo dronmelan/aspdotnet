@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using LibraryReservation.Models;
 
-namespace Reservation.Models
+
+namespace LibraryReservation.Data
 {
-	public class BookingDbContext : DbContext
+    public class BookingDbContext : DbContext
 	{
 		public BookingDbContext (DbContextOptions <BookingDbContext> options) : base(options) { }
 		public DbSet<User> Users => Set<User>();  

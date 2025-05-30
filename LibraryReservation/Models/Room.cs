@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace Reservation.Models
+namespace LibraryReservation.Models
 {
 	public class Room
 	{
