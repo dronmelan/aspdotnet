@@ -79,23 +79,35 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<BookingDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+
     builder.Services.AddScoped<IBookingRepository, EFBookingRepository>();
 
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
 
-    var app = builder.Build();
+builder.Services.AddSignalR();
+
+var app = builder.Build();
 
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+app.UseRouting();
 
-    app.UseHttpsRedirection();
+app.UseAuthorization();
 
 app.UseCors("AllowAll");
 app.UseAuthentication();
-app.UseAuthorization();
+app.UseHttpsRedirection();
 app.MapControllers();
-    app.Run();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<ReservationHub>("/reservationHub");
+});
+
+app.Run();
