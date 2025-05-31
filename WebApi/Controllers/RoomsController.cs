@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using LibraryReservation.Models;
 using LibraryReservation.Repository;
+using WebApi.Dtos;
 
 namespace WebApi.Controllers
 {
@@ -9,6 +10,7 @@ namespace WebApi.Controllers
     public class RoomsController : ControllerBase
     {
         private readonly IBookingRepository _repository;
+
 
         public RoomsController(IBookingRepository repository)
         {
@@ -27,11 +29,22 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Room room)
+        public async Task<IActionResult> Create([FromBody] RoomDto dto)
         {
+            var room = new Room
+            {
+                RoomNumber = dto.RoomNumber,
+                RoomType = dto.RoomType,
+                Capacity = dto.Capacity,
+                PricePerNight = dto.PricePerNight,
+                Description = dto.Description,
+                IsAvailable = dto.IsAvailable
+            };
+
             await _repository.AddAsync(room);
             return CreatedAtAction(nameof(Get), new { id = room.Id }, room);
         }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] Room room)

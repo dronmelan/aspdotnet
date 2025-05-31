@@ -29,7 +29,6 @@ namespace Reservation.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Перевіряємо чи користувач вже існує
                 var existingUser = repository.Users.FirstOrDefault(u => u.Email == model.Email);
                 if (existingUser != null)
                 {
@@ -37,7 +36,6 @@ namespace Reservation.Controllers
                     return View(model);
                 }
 
-                // Створюємо нового користувача
                 var user = new User
                 {
                     Name = model.Name,
@@ -47,13 +45,10 @@ namespace Reservation.Controllers
                     Role = model.Role
                 };
 
-                // Додаємо до контексту (тут потрібно буде додати метод Save до репозиторію)
-                // Тимчасово використовуємо HttpContext.Session для демонстрації
                 HttpContext.Session.SetString("UserId", "1");
                 HttpContext.Session.SetString("UserRole", user.Role);
                 HttpContext.Session.SetString("UserName", user.Name);
 
-                // Створюємо claims для автентифікації
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Name),

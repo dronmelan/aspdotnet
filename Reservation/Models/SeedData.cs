@@ -67,6 +67,17 @@ namespace Reservation
 				
 			}
 
+            if (!context.Users.Any(u => u.Email == "admin@test.com"))
+            {
+                context.Users.Add(new User
+                {
+                    Name = "Admin",
+                    Email = "admin@test.com",
+                    PasswordHash = "admin",
+                    Role = "Admin"
+                });
+            }
+
             context.SaveChanges();
         }
 	}

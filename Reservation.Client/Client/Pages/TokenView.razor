@@ -1,0 +1,22 @@
+﻿@page "/token"
+@inject IJSRuntime JS
+
+<h3>JWT Token</h3>
+
+@if (string.IsNullOrEmpty(token))
+{
+    <p><em>Token not found.</em></p>
+}
+else
+{
+    <textarea rows="8" style="width:100%">@token</textarea>
+}
+
+@code {
+    private string? token;
+
+    protected override async Task OnInitializedAsync()
+    {
+        token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+    }
+}

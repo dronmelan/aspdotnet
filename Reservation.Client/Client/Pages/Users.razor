@@ -1,0 +1,110 @@
+﻿@page "/users"
+@using Reservation.Client.Client.Models
+@using Microsoft.AspNetCore.Components.Forms
+@inject UserService UserService
+
+<h3>Users</h3>
+
+@if (users == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var user in users)
+        {
+            <li>
+                @user.Name (@user.Email)
+                <button @onclick="() => StartEdit(user)">Edit</button>
+                <button @onclick="() => DeleteUser(user.Id)">Delete</button>
+            </li>
+        }
+    </ul>
+
+    <button @onclick="StartCreate">Add New User</button>
+
+    @if (isEditing)
+    {
+        <h4>@(editUser.Id == 0 ? "Add User" : "Edit User")</h4>
+
+        <EditForm Model="editUser" OnValidSubmit="SaveUser">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Name:</label>
+        <InputText @bind="editUser.Name" />
+    </div>
+    <div>
+        <label>Email:</label>
+        <InputText @bind="editUser.Email" />
+    </div>
+    <div>
+        <label>Password:</label>
+        <InputText @bind="editUser.PasswordHash" type="password" />
+    </div>
+    <div>
+        <label>Role:</label>
+        <InputText @bind="editUser.Role" />
+    </div>
+
+    <button type="submit">Save</button>
+    <button type="button" @onclick="CancelEdit">Cancel</button>
+</EditForm>
+
+    }
+}
+
+@code {
+    private List<User>? users;
+    private User editUser = new();
+    private bool isEditing = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await UserService.GetUsersAsync();
+    }
+
+    private async Task SaveUser()
+    {
+        if (editUser.Id == 0)
+            await UserService.AddUserAsync(editUser);
+        else
+            await UserService.UpdateUserAsync(editUser.Id, editUser);
+
+        users = await UserService.GetUsersAsync();
+        CancelEdit();
+    }
+
+    private void StartCreate()
+    {
+        editUser = new User();
+        isEditing = true;
+    }
+
+    private void StartEdit(User user)
+    {
+        editUser = new User
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email,
+            PasswordHash = user.PasswordHash,
+            Role = user.Role
+        };
+        isEditing = true;
+    }
+
+    private void CancelEdit()
+    {
+        editUser = new();
+        isEditing = false;
+    }
+
+    private async Task DeleteUser(int id)
+    {
+        await UserService.DeleteUserAsync(id);
+        users = await UserService.GetUsersAsync();
+    }
+}

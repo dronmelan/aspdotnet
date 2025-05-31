@@ -42,7 +42,6 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

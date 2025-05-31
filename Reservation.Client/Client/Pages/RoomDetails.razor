@@ -1,0 +1,36 @@
+﻿@page "/rooms/details/{Id:int}"
+@using Reservation.Client.Client.Models
+@inject RoomService RoomService
+@inject NavigationManager Nav
+
+<h3>Деталі кімнати</h3>
+
+@if (room == null)
+{
+    <p><em>Завантаження...</em></p>
+}
+else
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@room.RoomNumber — @room.RoomType</h5>
+            <p class="card-text">@room.Description</p>
+            <p class="card-text">Місткість: @room.Capacity</p>
+            <p class="card-text">Ціна за ніч: <strong>@room.PricePerNight ₴</strong></p>
+            <p class="card-text">Статус: @(room.IsAvailable ? "Доступна" : "Зайнята")</p>
+            <button class="btn btn-outline-secondary" @onclick="GoBack">Назад</button>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private Room? room;
+
+    protected override async Task OnInitializedAsync()
+    {
+        room = await RoomService.GetByIdAsync(Id);
+    }
+
+    void GoBack() => Nav.NavigateTo("/rooms");
+}

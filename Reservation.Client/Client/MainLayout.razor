@@ -1,0 +1,17 @@
+﻿@inherits LayoutComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<div class="main-layout">
+    <AuthorizeView>
+        <Authorized>
+            <p>Вітаю, @context.User.Identity.Name!</p>
+        </Authorized>
+        <NotAuthorized>
+            <p>Будь ласка, увійдіть.</p>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <div class="page-content">
+        @Body
+    </div>
+</div>

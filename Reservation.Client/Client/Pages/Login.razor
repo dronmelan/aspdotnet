@@ -1,0 +1,46 @@
+﻿@page "/login"
+@using Microsoft.AspNetCore.Components.Forms
+@using Reservation.Client.Client.shared.Models
+@using Reservation.Client.Shared.Services
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+
+<h3>Вхід</h3>
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <p style="color:red">@error</p>
+}
+
+<EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>Email:</label>
+        <InputText @bind-Value="loginModel.Email" />
+    </div>
+    <div>
+        <label>Password:</label>
+        <InputText @bind-Value="loginModel.Password" type="password" />
+    </div>
+    <button type="submit">Увійти</button>
+</EditForm>
+
+@code {
+    private LoginDto loginModel = new();
+    private string? error;
+
+    private async Task HandleLogin()
+    {
+        try
+        {
+            var token = await AuthService.Login(loginModel);
+            Navigation.NavigateTo("/");
+        }
+        catch
+        {
+            error = "Невірні дані або проблема з сервером.";
+        }
+    }
+
+}

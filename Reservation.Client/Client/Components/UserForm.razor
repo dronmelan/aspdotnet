@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Reservation.Client.Client.Models
+
+@code {
+    [Parameter] public User Model { get; set; } = new();
+    [Parameter] public EventCallback OnSave { get; set; }
+
+    private async Task HandleSubmit()
+    {
+        await OnSave.InvokeAsync();
+    }
+}
+
+<EditForm Model="@Model" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Name:</label>
+        <InputText @bind="Model.Name" />
+    </div>
+    <div>
+        <label>Email:</label>
+        <InputText @bind="Model.Email" />
+    </div>
+    <div>
+        <label>Password:</label>
+        <InputText @bind="Model.PasswordHash" type="password" />
+    </div>
+    <div>
+        <label>Role:</label>
+        <InputText @bind="Model.Role" />
+    </div>
+
+    <button type="submit">Save</button>
+</EditForm>
