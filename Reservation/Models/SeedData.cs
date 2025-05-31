@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LibraryReservation.Data;
+using LibraryReservation.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Org.BouncyCastle.Crypto.Generators;
 using Reservation.Models;
 
 namespace Reservation
@@ -60,10 +63,22 @@ namespace Reservation
                         IsAvailable = true,
                         HotelId = 1
                     }
-                );
-
-				context.SaveChanges();
+                );               
+				
 			}
-		}
+
+            if (!context.Users.Any(u => u.Email == "admin@test.com"))
+            {
+                context.Users.Add(new User
+                {
+                    Name = "Admin",
+                    Email = "admin@test.com",
+                    PasswordHash = "admin",
+                    Role = "Admin"
+                });
+            }
+
+            context.SaveChanges();
+        }
 	}
 }

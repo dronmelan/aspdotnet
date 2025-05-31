@@ -3,8 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Reservation.Models;
 using Reservation.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
-
-
+using LibraryReservation.Repository;
 
 namespace SportsStore.Controllers
 {
@@ -20,7 +19,6 @@ namespace SportsStore.Controllers
 
         public ViewResult Index(string? roomType, int page = 1)
         {
-            HttpContext.Session.SetString("TestKey", "Hello from Session");
             if (roomType != null)
             {
                 HttpContext.Session.SetString("SelectedRoomType", roomType);
@@ -40,7 +38,9 @@ namespace SportsStore.Controllers
                 .Where(r => roomType == null || r.RoomType == roomType)
                 .Count();
 
-
+            // Передаємо інформацію про роль користувача у ViewBag
+            ViewBag.UserRole = User.IsInRole("Admin") ? "Admin" : User.IsInRole("User") ? "User" : "Guest";
+            ViewBag.IsAuthenticated = User.Identity?.IsAuthenticated ?? false;
 
             return View(new RoomListViewModel
             {
@@ -53,9 +53,6 @@ namespace SportsStore.Controllers
                 },
                 CurrentCategory = roomType
             });
-
         }
-
     }
-
 }

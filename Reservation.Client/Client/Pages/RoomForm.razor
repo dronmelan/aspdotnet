@@ -1,0 +1,66 @@
+﻿@page "/rooms/add"
+@page "/rooms/edit/{Id:int}"
+@using Microsoft.AspNetCore.Components.Forms
+@using Reservation.Client.Client.Models
+@inject RoomService RoomService
+@inject NavigationManager Nav
+
+<h3>@(Id == 0 ? "Додати кімнату" : "Редагувати кімнату")</h3>
+
+<EditForm Model="room" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-2">
+        <label>Номер кімнати:</label>
+        <InputText @bind-Value="room.RoomNumber" class="form-control" />
+    </div>
+    <div class="mb-2">
+        <label>Тип:</label>
+        <InputText @bind-Value="room.RoomType" class="form-control" />
+    </div>
+    <div class="mb-2">
+        <label>Місткість:</label>
+        <InputNumber @bind-Value="room.Capacity" class="form-control" />
+    </div>
+    <div class="mb-2">
+        <label>Ціна за ніч:</label>
+        <InputNumber @bind-Value="room.PricePerNight" class="form-control" />
+    </div>
+    <div class="mb-2">
+        <label>Опис:</label>
+        <InputText @bind-Value="room.Description" class="form-control" />
+    </div>
+    <div class="mb-2">
+        <label>Доступність:</label>
+        <InputCheckbox @bind-Value="room.IsAvailable" class="form-check-input" />
+    </div>
+
+    <button class="btn btn-success" type="submit">Зберегти</button>
+    <button class="btn btn-secondary" @onclick="Cancel">Скасувати</button>
+</EditForm>
+
+@code {
+    [Parameter] public int? Id { get; set; }
+    private Room room = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id.HasValue && Id.Value > 0)
+        {
+            room = await RoomService.GetByIdAsync(Id.Value);
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (Id.HasValue && Id.Value > 0)
+            await RoomService.UpdateAsync(Id.Value, room);
+        else
+            await RoomService.AddAsync(room);
+
+        Nav.NavigateTo("/rooms");
+    }
+
+    private void Cancel() => Nav.NavigateTo("/rooms");
+}

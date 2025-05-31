@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LibraryReservation.Data;
+using LibraryReservation.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Reservation.Models;
@@ -14,14 +17,15 @@ namespace Reservation.Controllers
             _context = context;
         }
 
-        // READ: All Rooms
+        // READ: All Rooms - доступно всім
         public async Task<IActionResult> Index()
         {
             var rooms = await _context.Rooms.Include(r => r.Hotel).ToListAsync();
             return View(rooms);
         }
 
-        // READ: Room Details
+        // READ: Room Details - доступно лише зареєстрованим користувачам
+        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
             var room = await _context.Rooms.Include(r => r.Hotel)
@@ -32,7 +36,8 @@ namespace Reservation.Controllers
             return View(room);
         }
 
-        // CREATE: Form
+        // CREATE: Form - тільки для адмінів
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["Hotels"] = new SelectList(_context.Hotels, "Id", "Name");
@@ -41,6 +46,7 @@ namespace Reservation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Room room)
         {
             if (ModelState.IsValid)
@@ -53,7 +59,8 @@ namespace Reservation.Controllers
             return View(room);
         }
 
-        // UPDATE: Form
+        // UPDATE: Form - тільки для адмінів
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var room = await _context.Rooms.FindAsync(id);
@@ -65,6 +72,7 @@ namespace Reservation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, Room room)
         {
             if (id != room.Id) return NotFound();
@@ -79,7 +87,8 @@ namespace Reservation.Controllers
             return View(room);
         }
 
-        // DELETE: Confirmation Page
+        // DELETE: Confirmation Page - тільки для адмінів
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var room = await _context.Rooms.Include(r => r.Hotel).FirstOrDefaultAsync(r => r.Id == id);
@@ -90,6 +99,7 @@ namespace Reservation.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var room = await _context.Rooms.FindAsync(id);

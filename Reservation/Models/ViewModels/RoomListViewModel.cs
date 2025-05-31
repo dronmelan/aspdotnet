@@ -1,4 +1,6 @@
-﻿namespace Reservation.Models.ViewModels
+﻿using LibraryReservation.Models;
+
+namespace Reservation.Models.ViewModels
 {
     public class RoomListViewModel
     {

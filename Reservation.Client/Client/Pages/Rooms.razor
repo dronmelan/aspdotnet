@@ -1,0 +1,66 @@
+﻿@page "/rooms"
+@using Reservation.Client.Client.Models
+@inject RoomService RoomService
+@inject NavigationManager Nav
+
+<h3>Кімнати</h3>
+
+<div class="d-flex justify-content-between mb-3">
+    <h5 class="text-primary">Доступні кімнати</h5>
+    <button class="btn btn-primary" @onclick="AddRoom">Додати кімнату</button>
+</div>
+
+@if (rooms == null)
+{
+    <p><em>Завантаження...</em></p>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var room in rooms)
+        {
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h5>@room.RoomNumber — @room.RoomType</h5>
+                    <p class="mb-1">@room.Description</p>
+                    <small>Місткість: @room.Capacity | Ціна: <strong>@room.PricePerNight ₴</strong></small>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-danger" @onclick="() => DeleteRoom(room.Id)">Видалити</button>
+                    <button class="btn btn-sm btn-primary" @onclick="() => EditRoom(room.Id)">Редагувати</button>
+                    <button class="btn btn-sm btn-outline-primary" @onclick="() => ViewRoom(room.Id)">Детальніше</button>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<Room>? rooms;
+
+    protected override async Task OnInitializedAsync()
+    {
+        rooms = await RoomService.GetAllAsync();
+    }
+
+    private async Task DeleteRoom(int id)
+    {
+        await RoomService.DeleteAsync(id);
+        rooms = await RoomService.GetAllAsync();
+    }
+
+    private void EditRoom(int id)
+    {
+        Nav.NavigateTo($"/rooms/edit/{id}");
+    }
+
+    private void ViewRoom(int id)
+    {
+        Nav.NavigateTo($"/rooms/details/{id}");
+    }
+
+    private void AddRoom()
+    {
+        Nav.NavigateTo("/rooms/add");
+    }
+}

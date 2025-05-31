@@ -1,0 +1,29 @@
+﻿@page "/register"
+@using Microsoft.AspNetCore.Components.Forms
+@using Reservation.Client.Shared.Models
+@using Reservation.Client.Shared.Services
+@inject IAuthService AuthService
+@inject NavigationManager Nav
+
+<h3>Register</h3>
+
+<EditForm Model="model" OnValidSubmit="HandleRegister">
+    <InputText @bind-Value="model.Username" placeholder="Username" />
+    <InputText @bind-Value="model.Email" placeholder="Email" />
+    <InputText @bind-Value="model.Password" type="password" placeholder="Password" />
+    <button type="submit">Register</button>
+</EditForm>
+
+<p>@message</p>
+
+@code {
+    private RegisterDto model = new();
+    private string? message;
+
+    private async Task HandleRegister()
+    {
+        await AuthService.Register(model);
+        message = "Registered!";
+        Nav.NavigateTo("/login");
+    }
+}
